@@ -1,5 +1,7 @@
 -- 01_revenue_analysis.sql
 -- Goal: build revenue sanity checks before retention work.
+-- Filter: status = 'Complete' only — we measure fulfilled transactions,
+--         not orders still in pipeline (Processing, Shipped).
 
 -- 1) Total revenue and order count
 SELECT
@@ -10,14 +12,17 @@ SELECT
 FROM order_items oi
 WHERE oi.status = 'Complete';
 
--- 2) Monthly revenue trend
+-- 2) Monthly revenue trend with year and quarter
+--    Year + quarter needed to validate seasonality across multiple cycles.
 SELECT
-    DATE_TRUNC('month', oi.created_at)::date AS month,
+    DATE_PART('year',    oi.created_at) AS year,
+    DATE_PART('quarter', oi.created_at) AS quarter,
+    DATE_TRUNC('month',  oi.created_at)::date AS month,
     ROUND(SUM(oi.sale_price)::numeric, 2) AS revenue
 FROM order_items oi
 WHERE oi.status = 'Complete'
-GROUP BY 1
-ORDER BY 1;
+GROUP BY 1, 2, 3
+ORDER BY 1, 2, 3;
 
 -- 3) Top categories by revenue
 SELECT
@@ -32,12 +37,41 @@ GROUP BY 1
 ORDER BY revenue DESC
 LIMIT 15;
 
--- 4) Revenue concentration by customer
+-- 4) Revenue concentration by customer (Pareto check)
 SELECT
     user_id,
     ROUND(SUM(sale_price)::numeric, 2) AS revenue
 FROM order_items
 WHERE status = 'Complete'
 GROUP BY 1
+ORDER BY revenue DESC
+LIMIT 20;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 ORDER BY revenue DESC
 LIMIT 20;
