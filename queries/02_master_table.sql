@@ -33,10 +33,10 @@ first_order_value AS (
         ON oi.order_id = fo.order_id
     GROUP BY 1
 ),
-first_order_top_category AS (
+first_product_category AS (
     SELECT
         x.order_id,
-        x.category AS first_order_top_category
+        x.category AS first_product_category
     FROM (
         SELECT
             oi.order_id,
@@ -50,14 +50,14 @@ first_order_top_category AS (
         JOIN first_order fo
             ON oi.order_id = fo.order_id
         JOIN products p
-            ON oi.product_id = p.id
+            ON oi.product_id = p.product_id
         GROUP BY 1, 2
     ) x
     WHERE x.rn = 1
 ),
 customer_base AS (
     SELECT
-        u.id AS user_id,
+        u.user_id,
         u.age,
         u.gender,
         u.country,
@@ -80,7 +80,7 @@ SELECT
     fo.delivered_at AS first_order_delivered_at,
     fo.returned_at AS first_order_returned_at,
     fov.first_order_value,
-    foc.first_order_top_category,
+    foc.first_product_category,
     CASE
         WHEN fo.next_order_created_at IS NULL THEN NULL
         ELSE (fo.next_order_created_at::date - fo.created_at::date)
@@ -106,7 +106,7 @@ JOIN first_order fo
     ON cb.user_id = fo.user_id
 LEFT JOIN first_order_value fov
     ON fo.order_id = fov.order_id
-LEFT JOIN first_order_top_category foc
+LEFT JOIN first_product_category foc
     ON fo.order_id = foc.order_id
 ORDER BY cb.user_id;
 
