@@ -1,7 +1,6 @@
 # TheLook E-Commerce: Customer Retention Analysis
 ### Why Do 78% of Customers Never Return?
 
----
 
 ## Executive Summary
 
@@ -10,13 +9,12 @@ make only one purchase and never return. Starting from a broad
 revenue health check, the analysis naturally narrowed to a single 
 critical finding: the platform has a severe retention problem, 
 not an acquisition problem. Through systematic hypothesis testing 
-across four dimensions — demographics, product category, first 
-order value, and delivery time — no variable was found to explain 
+across four dimension demographics, product category, first 
+order value, and delivery time no variable was found to explain 
 the return decision. This leads to a clear and honest conclusion: 
 the driver of retention lies in post-purchase experience data 
 that does not currently exist in the dataset.
 
----
 
 ## Business Context
 
@@ -36,11 +34,10 @@ order volume, not by higher prices, larger baskets, or better
 conversion rates.
 
 This led to the next question: if volume drives revenue, 
-what drives volume? The answer pointed directly to acquisition — 
+what drives volume? The answer pointed directly to acquisition 
 the platform was consistently bringing in new customers. 
 But this uncovered a deeper structural problem.
 
----
 
 ## The Discovery: A Leaky Bucket
 
@@ -53,10 +50,9 @@ customers after the first order. At scale, this creates a
 "leaky bucket" dynamic: strong inflow of new customers, 
 chronic outflow with no retention mechanism to offset it. 
 Retaining even a fraction of these customers would generate 
-revenue at zero acquisition cost — making this the highest-ROI 
+revenue at zero acquisition cost making this the highest-ROI 
 problem in the business.
 
----
 
 ## Hypothesis Testing: The Search for an Explanation
 
@@ -91,13 +87,12 @@ and suppresses the likelihood of a second purchase.
 was 7 days, with a mean of ~3 days. No variance existed 
 to explain the return gap. Hypothesis rejected.
 
----
 
 ## What the Data Cannot Tell Us
 
 This is perhaps the most important section of this analysis. 
 The systematic rejection of four plausible hypotheses is not 
-a failure — it is a finding. It tells us precisely where 
+a failure, it is a finding. It tells us precisely where 
 the explanation does *not* live, and therefore where 
 the business must look next.
 
@@ -113,7 +108,6 @@ To answer the retention question fully, the business would need:
 - Post-delivery browsing behavior
 - Returns and complaint records
 
----
 
 ## Recommendations
 
@@ -125,14 +119,13 @@ for the retention question.
 **Medium term:** Investigate the post-purchase communication 
 strategy. Since no demographic or product variable explains 
 the return decision, the most likely lever is what happens 
-between delivery and the next purchase opportunity — 
+between delivery and the next purchase opportunity
 emails, recommendations, re-engagement triggers.
 
 **Long term:** Build a retention KPI dashboard that tracks 
 repeat purchase rate and time-to-second-purchase monthly, 
 making retention a first-class metric alongside revenue.
 
----
 
 ## Technical Details
 
@@ -145,17 +138,3 @@ To reproduce: clone the repo, connect to a TheLook PostgreSQL
 instance, run SQL scripts in /queries in order, 
 then execute /notebooks/analysis.ipynb.
 
----
-
-## Project Structure
-
-├── queries/
-│   ├── 01_revenue_decomposition.sql
-│   ├── 02_seasonality_analysis.sql
-│   ├── 03_retention_baseline.sql
-│   └── 04_master_table.sql
-├── notebooks/
-│   └── analysis.ipynb
-├── dashboard/
-│   └── thelook_retention.pbix
-└── README.md
